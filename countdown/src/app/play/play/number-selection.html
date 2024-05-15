@@ -1,0 +1,22 @@
+<div class="middle">
+  <ion-card>
+    <div class="container">
+      Pick your next number
+    </div>
+    <ion-card-content>
+      <div class="container">
+        <div>
+          <app-button baseEmit [info]="'SM'" text="SM" (toInfo)="generateSmallNb()"></app-button>
+        </div>
+        <div>
+          <app-button baseEmit [info]="'L'" text="L" (toInfo)="generateLargeNb()"></app-button>
+        </div>
+      </div>
+      <div class="container">
+        <div *ngFor="let number of generatedNbs">
+          <ion-chip [outline]=true>{{number}}</ion-chip>
+        </div>
+      </div>
+    </ion-card-content>
+  </ion-card>
+</div>
