@@ -18,4 +18,8 @@ export const routes: Routes = [
     path: 'number-selection',
     loadComponent: () => import('./play/play/number-selection.page').then(m => m.NumberSelection)
   },
+  {
+    path: 'math-game/:gameId',
+    loadComponent: () => import('./math-game/math-game.component').then(m => m.MathGameComponent),
+  }
 ];
