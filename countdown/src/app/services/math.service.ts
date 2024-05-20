@@ -1,20 +1,40 @@
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
+import { Subject, tap } from 'rxjs';
+import { ClockService } from './clock/clock.service';
+import { Store } from '@ngrx/store';
+import { addGameNumbers } from '../store/actions';
 
 @Injectable({
   providedIn: 'root'
 })
 export class MathService {
-  constructor() { }
+  clockService = inject(ClockService)
+  store = inject(Store);
+  numbers: number[] = [2, 3, 40, 50, 1];
+  numberToCompute = this.generateNbToCompute()
+  generatedNbSubject = new Subject<number>;
 
-  generateSmallNb(): number {
-    return Math.floor(Math.random() * 10);
+  constructor() {
+    this.generatedNbSubject.pipe(
+      tap(number => {
+        this.numbers.push(number)
+        if (this.numbers.length === 5) {
+          this.clockService.startTimer(2)
+          this.store.dispatch(addGameNumbers({ numbers: this.numbers, gameNumber: this.generateNbToCompute() }))
+        }
+      })
+    ).subscribe()
   }
 
-  generateLargeNb(): number {
+  generateSmallNb() {
+    this.generatedNbSubject.next(Math.floor((Math.random() * 9) + 1));
+  }
+
+  generateLargeNb() {
     const possibleNumbers = [10, 25, 50, 75, 100];
     const index = Math.floor((Math.random() * 5));
 
-    return possibleNumbers[index];
+    this.generatedNbSubject.next(possibleNumbers[index]);
   }
 
   generateNbToCompute(): number {

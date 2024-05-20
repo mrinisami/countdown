@@ -36,9 +36,32 @@
 /* @import "@ionic/angular/css/palettes/dark.class.css"; */
 @import '@ionic/angular/css/palettes/dark.system.css';
 
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
 .middle {
     display: flex;
     justify-content: center;
     align-items: center;
     height: 100%;
+    width: 100%;
+}
+
+.bottom {
+    display: flex;
+    justify-content: flex-end;
+    align-items: flex-end;
+    height: 100%;
+    width: 100%;
+}
+
+.row {
+    display: flex;
+    align-items: center;
+    width: 100%;
+}
+
+.maxWidth {
+    width: 100%;
 }
