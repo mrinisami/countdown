@@ -1,12 +1,10 @@
 import { CommonModule } from '@angular/common';
-import { Component, OnInit, inject } from '@angular/core';
+import { Component, EventEmitter, OnInit, Output, inject } from '@angular/core';
 import { IonButton, IonIcon } from '@ionic/angular/standalone';
 import { IonCol, IonGrid, IonRow } from '@ionic/angular/standalone';
 import { addIcons } from 'ionicons';
-import { checkmark, checkmarkCircle, sendOutline } from 'ionicons/icons'
-import { operations } from './operations';
-import { Store } from '@ngrx/store';
-import { selectGameInfo } from '../store/selectors';
+import { backspaceOutline, trashOutline } from 'ionicons/icons'
+import { Operations, operations } from './operations';
 import { CircleButtonComponent } from '../core/circle-button/circle-button.component';
 import { EmitFromInputDirective } from '../core/emit-from-input.directive';
 import { MathService } from '../services/math.service';
@@ -18,41 +16,37 @@ import { OperatorDirective } from './operator.directive';
   templateUrl: './calculator.component.html',
   styleUrls: ['./calculator.component.scss'],
   standalone: true,
-  imports: [IonGrid, IonRow, IonCol, IonButton, IonIcon, CommonModule, CircleButtonComponent, EmitFromInputDirective, OperatorDirective]
+  imports: [IonGrid, IonRow, IonCol, IonButton, IonIcon, CommonModule, CircleButtonComponent, EmitFromInputDirective, OperatorDirective],
 })
 export class CalculatorComponent implements OnInit {
-  private mathService = inject(MathService);
   private calculatorService = inject(CalculatorService)
-  operators = operations.map(val => this.addDisabledState(val))
-  numbers = this.mathService.numbers.map(val => this.addDisabledState(val.toString()))
+  operators = this.calculatorService.operators;
+  numbers = this.calculatorService.numbers;
   operations: string[] = this.calculatorService.operations
 
+  @Output()
+  answerEvent = new EventEmitter<number>();
+
   constructor() {
-    addIcons({ sendOutline, checkmarkCircle, checkmark })
+    addIcons({ trashOutline, backspaceOutline })
   }
 
   ngOnInit() { }
 
+  computeAnswer() {
+    this.answerEvent.next(this.calculatorService.compute());
+  }
+
   addOperation(value: DisablableInput) {
-    this.calculatorService.addOperation(value.value);
-    this.setDisableState(value);
+    this.calculatorService.addOperation(value);
   }
 
-  addDisabledState(value: string): DisablableInput {
-    return ({ value, disabled: false })
+  eraseLastOperation() {
+    this.calculatorService.eraseLastOperation();
   }
 
-  private setDisableState(value: DisablableInput) {
-    if (this.numbers.find(val => val.value === value.value)) {
-      this.operators.forEach(val => val.disabled = false)
-      this.numbers.forEach(val => val.disabled = true)
-    }
-
-    if (this.operators.find(val => val.value === value.value)) {
-      this.numbers.filter(nb => !this.operations.includes(nb.value))
-        .forEach(val => val.disabled = false)
-      this.operators.forEach(val => val.disabled = true)
-    }
+  clearOperations() {
+    this.calculatorService.clear()
   }
 }
 

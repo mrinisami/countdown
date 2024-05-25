@@ -1,4 +1,4 @@
-interface Operations {
+export interface Operations {
     divide: string;
     multiply: string;
     addition: string;
@@ -6,10 +6,10 @@ interface Operations {
     parenthesis: string;
 }
 
-export const operations = [
-    String.fromCharCode(247),
-    '\u00D7',
-    String.fromCharCode(43),
-    '\u2212',
-    '()'
-]
+export const operations: Operations = {
+    divide: String.fromCharCode(247),
+    multiply: '\u00D7',
+    addition: String.fromCharCode(43),
+    substraction: '\u2212',
+    parenthesis: '()'
+}
