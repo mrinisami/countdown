@@ -10,7 +10,7 @@ import { addGameNumbers } from '../store/actions';
 export class MathService {
   clockService = inject(ClockService)
   store = inject(Store);
-  numbers: number[] = [2, 3, 40, 50, 1];
+  numbers: number[] = [3, 4, 5, 10, 25];
   numberToCompute = this.generateNbToCompute()
   generatedNbSubject = new Subject<number>;
 

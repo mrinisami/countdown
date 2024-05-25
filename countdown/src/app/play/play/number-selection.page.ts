@@ -19,7 +19,6 @@ import { routes } from 'src/app/routes';
   standalone: true,
   imports: [IonContent, IonHeader, IonTitle, IonToolbar, CommonModule,
     EmitFromInputDirective, ButtonComponent, IonCard, IonCardTitle, IonCardContent, IonChip, ProgressComponent, IonProgressBar],
-  providers: [MathService]
 })
 export class NumberSelection implements OnInit {
   private clockService = inject(ClockService);
